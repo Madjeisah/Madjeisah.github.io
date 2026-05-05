@@ -1,61 +1,55 @@
 
-<h2 class="sr-only">Timeline of biomedical language model architectures from 2019 to 2025, organized into four families: encoder-only, generative, general-purpose LLMs, and dedicated medical LLMs.</h2>
+<h2 class="sr-only" style="font-size:28px">Timeline of biomedical language model architectures from 2019 to 2025, organized into four families: encoder-only, generative, general-purpose LLMs, and dedicated medical LLMs.</h2>
 
 <style>
-.tl-wrap{padding:.5rem 0 1rem;font-size:16px}
-.tl-legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1rem;font-size:18px;color:var(--color-text-secondary)}
+.tl-wrap{padding:.5rem 0 1rem;font-size:18px}
+.tl-legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1rem;font-size:20px;color:var(--color-text-secondary)}
 .tl-legend span{display:flex;align-items:center;gap:5px}
 .tl-swatch{width:10px;height:10px;border-radius:2px;flex-shrink:0}
 .tl-yearbar{position:relative;margin-left:148px;height:20px;margin-bottom:2px}
-.tl-yr{position:absolute;font-size:16px;color:var(--color-text-tertiary);transform:translateX(-50%);top:0}
+.tl-yr{position:absolute;font-size:18px;color:var(--color-text-tertiary);transform:translateX(-50%);top:0}
 .tl-row{display:flex;align-items:stretch;margin-bottom:5px}
-.tl-flabel{width:140px;flex-shrink:0;text-align:right;padding-right:12px;font-size:16px;font-weight:500;display:flex;align-items:center;justify-content:flex-end;line-height:1.3}
+.tl-flabel{width:140px;flex-shrink:0;text-align:right;padding-right:12px;font-size:18px;font-weight:500;display:flex;align-items:center;justify-content:flex-end;line-height:1.3}
 .tl-track{flex:1;position:relative;border-radius:6px;padding:5px 0}
-.tl-chip{position:absolute;border-radius:4px;padding:0 7px;font-size:14px;font-weight:500;white-space:nowrap;cursor:default;transform:translateX(-50%);border:.5px solid transparent;transition:box-shadow .15s,transform .1s}
+.tl-chip{position:absolute;border-radius:4px;padding:0 7px;font-size:16px;font-weight:500;white-space:nowrap;cursor:default;transform:translateX(-50%);border:.5px solid transparent;transition:box-shadow .15s,transform .1s}
 .tl-chip:hover{transform:translateX(-50%) translateY(-1px)}
 .tl-gline{position:absolute;top:0;bottom:0;width:1px;pointer-events:none}
-.tl-tt{
-  display:none;position:fixed;z-index:999;
-  padding:8px 11px;
-  border-radius:7px;
-  font-size:14px;line-height:1.55;
-  pointer-events:none;max-width:240px;
-  background:var(--color-background-primary);
-  border:1px solid var(--color-border-secondary);
-  box-shadow:0 2px 8px rgba(0,0,0,.08),0 0 0 .5px rgba(0,0,0,.04);
-  color:var(--color-text-primary);
-}
-.tl-tt strong{display:block;margin-bottom:2px;font-size:14px;color:var(--color-text-primary)}
-.tl-tt span{color:var(--color-text-secondary);font-size:14px}
+.tl-tt{display:none;position:fixed;z-index:999;padding:8px 11px;border-radius:7px;font-size:16.5px;line-height:1.55;pointer-events:none;max-width:240px;background:var(--color-background-primary);border:1px solid var(--color-border-secondary);box-shadow:0 2px 8px rgba(0,0,0,.08),0 0 0 .5px rgba(0,0,0,.04);color:var(--color-text-primary)}
+.tl-tt strong{display:block;margin-bottom:4px;padding-bottom:4px;font-size:16px}
+.tl-tt span{font-size:16px;color:var(--color-text-secondary)}
 </style>
 
 <div class="tl-wrap">
 <div class="tl-legend">
   <span><span class="tl-swatch" style="background:#E1F5EE;border:.5px solid #0F6E56"></span>Encoder-only</span>
-  <span><span class="tl-swatch" style="background:#E6F1FB;border:.5px solid #185FA5"></span>Generative / Enc-dec</span>
+  <span><span class="tl-swatch" style="background:#E6F1FB;border:.5px solid #185FA5"></span>Generative / enc-dec</span>
   <span><span class="tl-swatch" style="background:#FAEEDA;border:.5px solid #854F0B"></span>General-purpose LLMs</span>
   <span><span class="tl-swatch" style="background:#FCEBEB;border:.5px solid #A32D2D"></span>Dedicated medical LLMs</span>
 </div>
 <div id="tl-root"></div>
-<p style="font-size:18px;color:var(--color-text-tertiary);margin-top:8px">
+<p style="font-size:20px;color:var(--color-text-tertiary);margin-top:8px">
   Horizontal position reflects year of publication. Hover any chip for a brief annotation. Encoder-only models are evaluated on BLURB; generative and LLM families on MedQA (USMLE).
+</p>
+<p style="font-size:20px;color:var(--color-text-tertiary);margin-top:8px">
+  Architectural evolution of pre-trained language models for biomedicine, 2019&ndash;2025, organized into four families: <em>encoder-only</em> (teal), <em>generative and encoder-decoder</em> (blue), <em>general-purpose LLMs</em> (amber), and <em>dedicated medical LLMs</em> (red). Horizontal position reflects year of publication; chips within a family are arranged in two rows to prevent overlap. Annotated milestones (dotted vertical lines) mark the key architectural transitions discussed in <a href="#sec:foundations">Section&nbsp;Foundations</a>. Encoder-only models are evaluated on the BLURB benchmark; all other families on MedQA (USMLE, 4-option), where available. &dagger;&nbsp;few-shot prompting; &Dagger;&nbsp;fine-tuned; &star;&nbsp;current state of the art.
 </p>
 </div>
 
 <div class="tl-tt" id="tt"></div>
 
 <script>
-const START=2019,END=2025.6;
+const START=2019, END=2025.6;
 const pct=yr=>((yr-START)/(END-START)*100).toFixed(3)+'%';
 const YEARS=[2019,2020,2021,2022,2023,2024,2025];
 
-const FAM_STYLE={
-  enc:{bg:'#E1F5EE',bdr:'#0F6E56',txt:'#085041',accentBg:'#E1F5EE',accentBdr:'#0F6E56'},
-  gen:{bg:'#E6F1FB',bdr:'#185FA5',txt:'#0C447C',accentBg:'#E6F1FB',accentBdr:'#185FA5'},
-  llm:{bg:'#FAEEDA',bdr:'#854F0B',txt:'#633806',accentBg:'#FAEEDA',accentBdr:'#854F0B'},
-  med:{bg:'#FCEBEB',bdr:'#A32D2D',txt:'#501313',accentBg:'#FCEBEB',accentBdr:'#A32D2D'},
+const S={
+  enc:{bg:'#E1F5EE',bdr:'#0F6E56',txt:'#085041'},
+  gen:{bg:'#E6F1FB',bdr:'#185FA5',txt:'#0C447C'},
+  llm:{bg:'#FAEEDA',bdr:'#854F0B',txt:'#633806'},
+  med:{bg:'#FCEBEB',bdr:'#A32D2D',txt:'#501313'},
 };
 
+// Medical LLMs: 4-row greedy assignment, CHIP_WIDTH=0.20, all gaps verified ≥ 0.40
 const families=[
   {id:'enc',label:'Encoder-only',rows:2,models:[
     {yr:2019.10,name:'BioBERT',      row:0,note:'110M · PubMed+PMC continued pre-training · BLURB 84.3%'},
@@ -71,7 +65,7 @@ const families=[
   {id:'gen',label:'Generative /\nEnc-Dec',rows:2,models:[
     {yr:2021.50,name:'SciFive',   row:0,note:'770M · T5 text-to-text for biomedical NLP'},
     {yr:2022.30,name:'BioGPT',    row:1,note:'1.5B · GPT-2 decoder · PubMedQA 81.0%'},
-    {yr:2022.55,name:'BioMedLM',  row:0,note:'2.7B · decoder · PubMed+PMC'},
+    {yr:2022.55,name:'BioMedLM',  row:0,note:'2.7B · Decoder · PubMed+PMC'},
     {yr:2022.80,name:'BioBART',   row:1,note:'400M · BART denoising · NLG tasks'},
     {yr:2023.20,name:'BiomedGPT', row:0,note:'182M · first open multimodal generalist · 16 SOTA results'},
   ]},
@@ -82,17 +76,19 @@ const families=[
     {yr:2023.85,name:'Gemini 1.0',  row:1,note:'Multimodal web-scale · MedQA 67.0%'},
     {yr:2024.25,name:'GPT-4o',      row:0,note:'Multimodal frontier · strong clinical + visual reasoning'},
   ]},
-  {id:'med',label:'Dedicated\nMedical LLMs',rows:3,models:[
+  {id:'med',label:'Dedicated\nMedical LLMs',rows:4,models:[
+    // 4-row greedy assignment — all same-row gaps ≥ 0.40yr (verified)
     {yr:2023.00,name:'Med-PaLM',     row:0,note:'540B · MedQA 67.6%† · MultiMedQA suite + 8-axis physician eval'},
     {yr:2023.12,name:'Meditron-70B', row:1,note:'70B · MedQA 70.2% · open-weight CPT'},
     {yr:2023.22,name:'Clin. Camel',  row:2,note:'70B · MedQA 60.7%‡ · QLoRA dialogue FT'},
-    {yr:2023.32,name:'MedAlpaca',    row:0,note:'13B · MedQA 35.4%‡ · fine-tuning paradox exemplar'},
-    {yr:2023.45,name:'HuatuoGPT',   row:1,note:'7B · Chinese medical LLM · physician+GPT-4 hybrid'},
-    {yr:2023.72,name:'Med-PaLM 2',  row:2,note:'MedQA 86.5%† · ensemble refinement + chain-of-retrieval'},
-    {yr:2024.10,name:'BioMistral',  row:0,note:'7B · multilingual · only biomedical model with cross-lingual eval'},
-    {yr:2024.30,name:'Med-Gemini ★',row:1,note:'MedQA 91.1%† — current SOTA · surpasses physician avg.'},
-    {yr:2024.62,name:'Polaris',     row:2,note:'Safety-first constellation · DPO on physician preference pairs'},
-    {yr:2025.22,name:'Baichuan-M1', row:0,note:'14B · full-stack medical pre-training from scratch'},
+    {yr:2023.32,name:'MedAlpaca',    row:3,note:'13B · MedQA 35.4%‡ · fine-tuning paradox exemplar'},
+    {yr:2023.45,name:'HuatuoGPT',   row:0,note:'7B · Chinese medical LLM · physician+GPT-4 hybrid'},  // gap from Med-PaLM = 0.45 ✓
+    {yr:2023.72,name:'Med-PaLM 2',  row:1,note:'MedQA 86.5%† · ensemble refinement + chain-of-retrieval'},  // gap from Meditron = 0.60 ✓
+    {yr:2024.10,name:'BioMistral',  row:0,note:'7B · multilingual · only biomedical model with cross-lingual eval'},          // gap from HuatuoGPT = 0.65 ✓
+    {yr:2024.30,name:'Med-Gemini ★',row:1,note:'MedQA 91.1%† — current SOTA · surpasses physician avg.'},  // gap from Med-PaLM2 = 0.58 ✓
+    {yr:2024.62,name:'Polaris',     row:0,note:'Safety-first constellation · DPO on physician preference pairs'},  // gap from BioMistral = 0.52 ✓
+    {yr:2025.22,name:'Baichuan-M1', row:0,note:'14B · full-stack medical pre-training from scratch'},  // gap from Polaris = 0.60 ✓
+
   ]},
 ];
 
@@ -108,7 +104,7 @@ const milestones=[
 const root=document.getElementById('tl-root');
 const tt=document.getElementById('tt');
 
-// ── year tick bar
+// year bar
 const ybar=document.createElement('div');
 ybar.className='tl-yearbar';
 YEARS.forEach(y=>{
@@ -118,7 +114,7 @@ YEARS.forEach(y=>{
 });
 root.appendChild(ybar);
 
-// ── milestone block
+// milestones — 2 staggered rows
 const mBlock=document.createElement('div');
 mBlock.style.cssText='position:relative;margin-left:148px;height:80px;margin-bottom:6px;';
 const ROW_TOP={0:'2px',1:'40px'};
@@ -126,9 +122,8 @@ milestones.forEach(m=>{
   const wrap=document.createElement('div');
   wrap.style.cssText=`position:absolute;left:${pct(m.yr)};top:${ROW_TOP[m.row]};transform:translateX(-50%);text-align:center;`;
   const chip=document.createElement('div');
-  chip.style.cssText=`display:inline-block;font-size:14px;color:var(--color-text-secondary);
-    background:var(--color-background-secondary);
-    border:.5px solid var(--color-border-secondary);
+  chip.style.cssText=`display:inline-block;font-size:16px;color:var(--color-text-secondary);
+    background:var(--color-background-secondary);border:.5px solid var(--color-border-secondary);
     border-radius:4px;padding:2px 6px;white-space:nowrap;line-height:1.4;font-style:italic;`;
   chip.innerHTML=m.txt.replace('\n','<br>');
   wrap.appendChild(chip);
@@ -139,11 +134,12 @@ milestones.forEach(m=>{
 });
 root.appendChild(mBlock);
 
-// ── family tracks
-const CHIP_H=22,ROW_GAP=4,FAM_GAP=6;
+// family tracks
+const CHIP_H=21, ROW_GAP=4, FAM_GAP=6;
 
 families.forEach(fam=>{
-  const s=FAM_STYLE[fam.id];
+  const s=S[fam.id];
+  const isMed=fam.id==='med';
   const row=document.createElement('div');
   row.className='tl-row';row.style.marginBottom=FAM_GAP+'px';
 
@@ -156,17 +152,13 @@ families.forEach(fam=>{
   const trackH=fam.rows*(CHIP_H+ROW_GAP)-ROW_GAP+12;
   const track=document.createElement('div');
   track.className='tl-track';
-  track.style.minHeight=trackH+'px';
-  track.style.background=s.bg;
-  track.style.border=`.5px solid ${s.bdr}33`;
-  track.style.borderRadius='6px';
-  track.style.padding='5px 0';
+  track.style.cssText=`min-height:${trackH}px;background:${s.bg};
+    border:.5px solid ${s.bdr}33;border-radius:6px;padding:5px 0;`;
 
   YEARS.forEach(y=>{
     const gl=document.createElement('div');
     gl.className='tl-gline';
-    gl.style.left=pct(y);
-    gl.style.background=s.bdr+'33';
+    gl.style.left=pct(y);gl.style.background=s.bdr+'33';
     track.appendChild(gl);
   });
 
@@ -177,26 +169,20 @@ families.forEach(fam=>{
     chip.style.top=(5+m.row*(CHIP_H+ROW_GAP))+'px';
     chip.style.height=CHIP_H+'px';
     chip.style.lineHeight=CHIP_H+'px';
+    // chip.style.fontSize=isMed?'9.5px':'10.5px';
     chip.style.background='white';
     chip.style.borderColor=s.bdr;
     chip.style.color=s.txt;
     chip.textContent=m.name;
 
     chip.addEventListener('mouseenter',e=>{
-      // highlight chip with family bg tint + stronger border
-      chip.style.background=s.accentBg;
-      chip.style.borderColor=s.accentBdr;
-      chip.style.boxShadow=`0 0 0 1.5px ${s.accentBdr}55, 0 3px 8px ${s.accentBdr}22`;
-      // tooltip — family-tinted header strip + white body
+      chip.style.background=s.bg;
+      chip.style.boxShadow=`0 0 0 1.5px ${s.bdr}66, 0 3px 8px ${s.bdr}22`;
       tt.style.display='block';
       tt.style.background='white';
       tt.style.borderColor=s.bdr+'88';
-      // tt.style.borderColor=s.accentBdr;
       tt.style.boxShadow=`0 2px 10px ${s.bdr}18, 0 0 0 .5px ${s.bdr}22`;
-      tt.innerHTML=`
-        <strong style="display:block;margin-bottom:4px;padding-bottom:4px;
-          border-bottom:.5px solid ${s.bdr}33;color:${s.txt}">${m.name}</strong>
-        <span style="color:var(--color-text-secondary)">${m.note}</span>`;
+      tt.innerHTML=`<strong style="border-bottom:.5px solid ${s.bdr}33;color:${s.txt}">${m.name}</strong><span>${m.note}</span>`;
     });
     chip.addEventListener('mousemove',e=>{
       tt.style.left=(e.clientX+14)+'px';
@@ -204,7 +190,6 @@ families.forEach(fam=>{
     });
     chip.addEventListener('mouseleave',()=>{
       chip.style.background='white';
-      chip.style.borderColor=s.bdr;
       chip.style.boxShadow='none';
       tt.style.display='none';
     });
