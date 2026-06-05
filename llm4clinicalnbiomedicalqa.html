@@ -1,5 +1,5 @@
 
-<h2 class="sr-only" style="font-size:28px">Timeline of biomedical language model architectures from 2019 to 2025, organized into four families: encoder-only, generative, general-purpose LLMs, and dedicated medical LLMs.</h2>
+<!-- <h2 class="sr-only" style="font-size:28px">Timeline of biomedical language model architectures from 2019 to 2025, organized into four families: encoder-only, generative, general-purpose LLMs, and dedicated medical LLMs.</h2>
 
 <style>
 .tl-wrap{padding:.5rem 0 1rem;font-size:18px}
@@ -199,4 +199,925 @@ families.forEach(fam=>{
   row.appendChild(track);
   root.appendChild(row);
 });
+</script> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biomedical LLM Architecture Evolution — Survey Figure & Appendix A</title>
+<style>
+
+/* ── Page shell ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: #F4F6F9;
+  color: #1a1a1a;
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+}
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+  overflow: hidden;
+  padding: 1.8rem 2rem 2.5rem 2rem;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.page-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.6rem;
+}
+.page-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: -.01em;
+  margin-bottom: .35rem;
+}
+.page-header p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* ── Section headings ───────────────────────────────────────────────────── */
+.section-heading {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: -.01em;
+  margin: 2rem 0 .75rem;
+  padding-bottom: .4rem;
+  border-bottom: 2px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.section-badge {
+  font-size: .9rem;
+  font-weight: 600;
+  background: #f0f0f0;
+  color: #555;
+  border-radius: 4px;
+  padding: 2px 7px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+/* ── Footnote pill bar ──────────────────────────────────────────────────── */
+.footnote-bar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: .85rem;
+  color: #555;
+  background: #f8f8f8;
+  border: .5px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 5px 12px;
+  margin-bottom: .9rem;
+}
+.footnote-bar span { white-space: nowrap; }
+
+/* ── Timeline base ──────────────────────────────────────────────────────── */
+.tl-wrap  { padding: .25rem 0 .5rem; font-size: 14px; }
+.tl-legend {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-bottom: .75rem; font-size: 14px; color: #555;
+}
+.tl-legend span { display: flex; align-items: center; gap: 5px; }
+.tl-swatch {
+  width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0;
+}
+.tl-yearbar  { position: relative; margin-left: 152px; height: 20px; margin-bottom: 2px; }
+.tl-yr {
+  position: absolute; font-size: 13px; color: #aaa;
+  transform: translateX(-50%); top: 0;
+}
+.tl-row      { display: flex; align-items: stretch; margin-bottom: 5px; }
+.tl-flabel {
+  width: 144px; flex-shrink: 0; text-align: right;
+  padding-right: 12px; font-size: 15px; font-weight: 600;
+  display: flex; align-items: center; justify-content: flex-end;
+  line-height: 1.3;
+}
+.tl-track {
+  flex: 1; position: relative; border-radius: 7px; padding: 5px 0;
+}
+.tl-chip {
+  position: absolute; border-radius: 4px; padding: 0 5px;
+  white-space: nowrap; cursor: default; transform: translateX(-50%);
+  border: .5px solid transparent;
+  transition: box-shadow .15s, transform .1s;
+  display: flex; align-items: center; gap: 2px;
+}
+.tl-chip:hover { transform: translateX(-50%) translateY(-1px); }
+.chip-name   { font-weight: 500; font-size: 13px;}
+.chip-sup    { font-size: 12px; line-height: 1; margin-top: -3px; opacity: .85; }
+.tl-gline {
+  position: absolute; top: 0; bottom: 0;
+  width: 1px; pointer-events: none;
+}
+
+/* ── Tooltip ─────────────────────────────────────────────────────────────── */
+.tl-tt {
+  display: none; position: fixed; z-index: 999;
+  padding: 8px 12px; border-radius: 8px;
+  font-size: 12.5px; line-height: 1.55;
+  pointer-events: none; max-width: 250px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 16px rgba(0,0,0,.08), 0 0 0 .5px rgba(0,0,0,.04);
+  color: #1a1a1a;
+}
+.tl-tt strong {
+  display: block; margin-bottom: 4px; padding-bottom: 4px;
+  font-size: 12px;
+}
+.tl-tt span { font-size: 12px; color: #555; }
+
+/* ── Caption ─────────────────────────────────────────────────────────────── */
+.fig-caption {
+  font-size: .9rem; color: #666; line-height: 1.55;
+  margin-top: .75rem;
+  padding: .6rem .9rem;
+  background: #fafafa;
+  border-left: 3px solid #ddd;
+  border-radius: 0 6px 6px 0;
+}
+
+/* ── Appendix tables ─────────────────────────────────────────────────────── */
+.appendix-intro {
+  font-size: .875rem; color: #444; line-height: 1.6;
+  margin-bottom: 1.2rem;
+}
+.appendix-intro ul {
+  margin: .5rem 0 .5rem 1.4rem;
+  font-size: .88rem; color: #444;
+}
+.appendix-intro li { margin-bottom: .2rem; }
+
+.app-section-title {
+  font-size: .95rem; font-weight: 700; color: #222;
+  margin: 1.8rem 0 .5rem;
+  padding-left: .5rem;
+  border-left: 3px solid #ccc;
+}
+
+.app-note {
+  font-size: .8rem; color: #666; font-style: italic;
+  margin: .4rem 0 1rem;
+  padding: .45rem .75rem;
+  background: #fafafa; border-radius: 5px;
+  border: .5px solid #eee;
+  line-height: 1.5;
+}
+
+.tbl-wrap { overflow-x: auto; margin-bottom: .5rem; }
+
+table.app-tbl {
+  width: 100%; border-collapse: collapse;
+  font-size: .8rem; color: #222;
+}
+table.app-tbl thead th {
+  background: #f5f5f5; font-weight: 700;
+  padding: 7px 10px; text-align: left;
+  border-bottom: 2px solid #e0e0e0;
+  white-space: nowrap;
+  font-size: .78rem; letter-spacing: .03em; color: #444;
+}
+table.app-tbl tbody tr:nth-child(even) { background: #fafafa; }
+table.app-tbl tbody tr:hover { background: #f0f7ff; }
+table.app-tbl td {
+  padding: 6px 10px; border-bottom: .5px solid #eee;
+  vertical-align: top; line-height: 1.45;
+}
+table.app-tbl td:first-child { font-weight: 600; white-space: nowrap; }
+
+.tag {
+  display: inline-block; border-radius: 3px;
+  padding: 1px 5px; font-size: .7rem; font-weight: 600;
+  white-space: nowrap;
+}
+.tag-os-yes  { background:#E1F5EE; color:#085041; border:.5px solid #0F6E56; }
+.tag-os-part { background:#FAEEDA; color:#633806; border:.5px solid #854F0B; }
+.tag-os-no   { background:#FCEBEB; color:#501313; border:.5px solid #A32D2D; }
+.tag-arch    { background:#f0f0f0; color:#333;     border:.5px solid #ccc; }
+
+.score { font-family: monospace; font-size: .8rem; color: #333; }
+.na    { color: #aaa; font-style: italic; }
+
+.url-link {
+  color: #185FA5; text-decoration: none; font-size: .75rem;
+  word-break: break-all;
+}
+.url-link:hover { text-decoration: underline; }
+
+.eval-note {
+  margin-top: 1.5rem; padding: .8rem 1rem;
+  background: #f8f8f8; border-radius: 8px;
+  border: .5px solid #e0e0e0;
+  font-size: .85rem; color: #444; line-height: 1.6;
+}
+.eval-note h4 { font-size: .88rem; font-weight: 700; margin-bottom: .4rem; color: #222; }
+.eval-note ol { margin-left: 1.3rem; }
+.eval-note li { margin-bottom: .25rem; }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ── Page header ────────────────────────────────────────────────────────── -->
+<div class="page-header">
+  <h1>Architectural Evolution of Biomedical Language Models (2019–2025)</h1>
+  <p>
+    Survey interactive preview and Appendix A — Full Model Inventory &nbsp;·&nbsp;
+    Covers encoder-only, generative, general-purpose LLMs, and dedicated medical LLMs.
+    Hover any model chip for details. Scroll down for the extended model tables.
+  </p>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     SECTION 1 — TIMELINE FIGURE
+     ════════════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">
+  Interactive Preview — Architectural Evolution Timeline
+  <span class="section-badge">§3 Foundations</span>
+</div>
+
+<!-- footnote key -->
+<div class="footnote-bar">
+  <span><strong>†</strong> Few-shot prompting</span>
+  <span><strong>‡</strong> Fine-tuned</span>
+  <span><strong>★</strong> Current state of the art</span>
+  <span style="color:#aaa">Encoder-only → BLURB &nbsp;|&nbsp; Others → MedQA (USMLE) where available</span>
+</div>
+
+<!-- legend -->
+<div class="tl-legend">
+  <span><span class="tl-swatch" style="background:#E1F5EE;border:.5px solid #0F6E56"></span>Encoder-only</span>
+  <span><span class="tl-swatch" style="background:#E6F1FB;border:.5px solid #185FA5"></span>Generative / enc-dec</span>
+  <span><span class="tl-swatch" style="background:#FAEEDA;border:.5px solid #854F0B"></span>General-purpose LLMs</span>
+  <span><span class="tl-swatch" style="background:#FCEBEB;border:.5px solid #A32D2D"></span>Dedicated medical LLMs</span>
+</div>
+
+<div id="tl-root"></div>
+
+<div class="fig-caption">
+  <!-- <strong>Interactive Preview</strong> -->
+  Architectural evolution of pre-trained language models for biomedicine, 2019–2025,
+  organized into four families: <em>encoder-only</em> (teal),
+  <em>generative and encoder-decoder</em> (blue),
+  <em>general-purpose LLMs</em> (amber), and
+  <em>dedicated medical LLMs</em> (red).
+  Horizontal position reflects year of publication; chips within each family are
+  arranged in multiple rows to prevent overlap.
+  Annotated milestones mark the key architectural transitions discussed in §3.
+  Encoder-only models are evaluated on BLURB; all other families on MedQA
+  (USMLE, 4-option) where available.
+  †&nbsp;few-shot prompting; ‡&nbsp;fine-tuned; ★&nbsp;current state of the art.
+</div>
+
+<div class="tl-tt" id="tt"></div>
+
+<div class="fig-caption" style="border-left: 4px solid #f44336;"> <!-- #4CAF50 -->
+  <p style="margin: 0 0 10px 0; font-family: monospace; font-size: 14px; line-height: 1.5;">
+    @article{hosen2026healthnlp_retrievers,<br>
+    &nbsp;&nbsp;title={HealthNLP\_Retrievers at ArchEHR-QA 2026: Cascaded LLM Pipeline for Grounded Clinical Question Answering},<br>
+    &nbsp;&nbsp;author={Hosen, Md Biplob and Hussein, Md Alomgeer and Masud, Md Akmol and Faruque, Omar and Reynolds, Tera L and Chen, Lujie Karen},<br>
+    &nbsp;&nbsp;journal={arXiv preprint arXiv:2604.26880},<br>
+    &nbsp;&nbsp;year={2026}<br>
+    }
+  </p>
+  <p style="margin: 0; font-size: 15px; font-style: italic; color:#f44336;">
+    📚 The authors respectfully request acknowledgment through citation should this work inform your research.
+  </p>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     SECTION 2 — APPENDIX A: FULL MODEL INVENTORY
+     ════════════════════════════════════════════════════════════════════════ -->
+<div class="section-heading" style="margin-top:2.5rem">
+  Appendix A — Full Model Inventory
+  <span class="section-badge">Extended Tables</span>
+</div>
+
+<div class="appendix-intro">
+  This appendix provides extended details for all pre-trained language models
+  discussed in §3 and summarized in the main Table 1.
+  Each entry reports:
+  <ul>
+    <li><strong>Arch</strong>: Enc = encoder-only, Dec = decoder-only, E-D = encoder-decoder, MM = multimodal.</li>
+    <li><strong>Strategy</strong>: CPT = continued pre-training; IFT = instruction fine-tuning;
+        SFT = supervised fine-tuning; DPO = direct preference optimisation; RLHF = reinforcement learning from human feedback.</li>
+    <li><strong>Benchmark results</strong>: BLURB (encoder-only); MedQA (4-option USMLE); MedMCQA; PubMedQA where reported.</li>
+    <li><strong>OS</strong>: open-source status — ✓ publicly released, ~ partial/institutional, ✗ proprietary.</li>
+  </ul>
+  Results marked <strong>†</strong> are few-shot prompted; <strong>‡</strong> fine-tuned;
+  <strong>★</strong> current SOTA on MedQA (4-option).
+  <em>n/a</em> = not reported or evaluation setting incompatible.
+</div>
+
+
+<!-- ── A.1 ENCODER-ONLY ───────────────────────────────────────────────────── -->
+<div class="app-section-title">A.1 &nbsp; Encoder-Only Models</div>
+<div class="app-note">
+  BLURB scores from the BLURB leaderboard or original papers (aggregate across all BLURB tasks).
+  Leaderboard: <a class="url-link" href="https://microsoft.github.io/BLURB/leaderboard.html" target="_blank">microsoft.github.io/BLURB</a>
+</div>
+<div class="tbl-wrap">
+<table class="app-tbl">
+  <thead>
+    <tr>
+      <th>Model</th><th>Reference · Venue</th><th>Arch</th><th>Params</th>
+      <th>Pre-training Corpus</th><th>Strategy</th>
+      <th>BLURB</th><th>OS</th><th>Weights / Code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>BioBERT</td>
+      <td>Lee et al. 2020 · ACL</td>
+      <td><span class="tag tag-arch">Enc</span></td><td>110M</td>
+      <td>PubMed abstracts + PMC full-text (4.5B tokens)</td>
+      <td>CPT from BERT-Base</td>
+      <td class="score">84.3</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://github.com/dmis-lab/biobert" target="_blank">github.com/dmis-lab/biobert</a></td>
+    </tr>
+    <tr>
+      <td>SciBERT</td>
+      <td>Beltagy et al. 2019 · EMNLP</td>
+      <td><span class="tag tag-arch">Enc</span></td><td>110M</td>
+      <td>PubMed abstracts + CS papers (3.2B tokens)</td>
+      <td>Pre-train from scratch</td>
+      <td class="score">83.0</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://github.com/allenai/scibert" target="_blank">github.com/allenai/scibert</a></td>
+    </tr>
+    <tr>
+      <td>Bio_ClinicalBERT</td>
+      <td>Alsentzer et al. 2019 · BioNLP</td>
+      <td><span class="tag tag-arch">Enc</span></td><td>110M</td>
+      <td>MIMIC-III discharge summaries (880M tokens)</td>
+      <td>CPT from BioBERT</td>
+      <td class="score">82.1</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://huggingface.co/emilyalsentzer/Bio_ClinicalBERT" target="_blank">HuggingFace: Bio_ClinicalBERT</a></td>
+    </tr>
+    <tr>
+      <td>BioMegatron</td>
+      <td>Shin et al. 2020 · EMNLP</td>
+      <td><span class="tag tag-arch">Enc</span></td><td>345M</td>
+      <td>PubMed abstracts (4.5B tokens)</td>
+      <td>Pre-train from scratch (Megatron-LM)</td>
+      <td class="score">85.2</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://catalog.ngc.nvidia.com/orgs/nvidia/models/biomegatron345muncased" target="_blank">NVIDIA NGC: BioMegatron</a></td>
+    </tr>
+    <tr>
+      <td>PubMedBERT</td>
+      <td>Gu et al. 2022 · JAMIA</td>
+      <td><span class="tag tag-arch">Enc</span></td><td>110M</td>
+      <td>PubMed abstracts only (3.1B tokens)</td>
+      <td>Pre-train from scratch; domain vocab</td>
+      <td class="score">84.9</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://huggingface.co/microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract" target="_blank">HuggingFace: PubMedBERT</a></td>
+    </tr>
+    <tr>
+      <td>UmlsBERT</td>
+      <td>Michalopoulos et al. 2021 · NAACL</td>
+      <td><span class="tag tag-arch">Enc</span></td><td>110M</td>
+      <td>PubMed + PMC + UMLS CUIs</td>
+      <td>CPT with UMLS-augmented MLM</td>
+      <td class="score">84.5</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://github.com/gmichalo/UmlsBERT" target="_blank">github.com/gmichalo/UmlsBERT</a></td>
+    </tr>
+    <tr>
+      <td>BioLinkBERT</td>
+      <td>Yasunaga et al. 2022 · ACL</td>
+      <td><span class="tag tag-arch">Enc</span></td><td>340M</td>
+      <td>PubMed (citation-linked document pairs)</td>
+      <td>Pre-train from scratch; linked docs</td>
+      <td class="score">86.4</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://huggingface.co/michiyasunaga/BioLinkBERT-large" target="_blank">HuggingFace: BioLinkBERT-large</a></td>
+    </tr>
+    <tr>
+      <td>GatorTron</td>
+      <td>Yang et al. 2022 · npj Digital Medicine</td>
+      <td><span class="tag tag-arch">Enc</span></td><td>8.9B</td>
+      <td>UF Health clinical notes + PubMed (90B tokens)</td>
+      <td>Pre-train from scratch (Megatron-LM)</td>
+      <td class="score">85.0 ‡</td>
+      <td><span class="tag tag-os-part">~</span></td>
+      <td><a class="url-link" href="https://catalog.ngc.nvidia.com/orgs/nvidia/teams/clara/models/gatortron_og" target="_blank">NVIDIA NGC: GatorTron (institutional reg. required)</a></td>
+    </tr>
+    <tr>
+      <td>Clinical ModernBERT</td>
+      <td>Gao et al. 2025 · arXiv</td>
+      <td><span class="tag tag-arch">Enc</span></td><td>149M</td>
+      <td>Medical literature + de-identified clinical notes</td>
+      <td>CPT with ModernBERT arch (SwiGLU, RoPE)</td>
+      <td class="score">84.1</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://huggingface.co/clinicalml/clinical-modernbert" target="_blank">HuggingFace: clinical-modernbert</a></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+<!-- ── A.2 GENERATIVE / ENCODER-DECODER ──────────────────────────────────── -->
+<div class="app-section-title">A.2 &nbsp; Generative and Encoder-Decoder Models</div>
+<div class="app-note">
+  These models are omitted from the main Table 1 for space. Their primary benchmarks differ from the
+  encoder-only family — PubMedQA for reading comprehension; ROUGE / BERTScore for NLG tasks.
+  BiomedGPT results are not comparable with text-only models (multimodal generalist).
+</div>
+<div class="tbl-wrap">
+<table class="app-tbl">
+  <thead>
+    <tr>
+      <th>Model</th><th>Reference · Venue</th><th>Arch</th><th>Params</th>
+      <th>Pre-training Corpus</th><th>Strategy</th>
+      <th>Best Result</th><th>OS</th><th>Weights / Code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SciFive</td>
+      <td>Phan et al. 2021 · arXiv</td>
+      <td><span class="tag tag-arch">E-D</span></td><td>770M</td>
+      <td>PubMed abstracts + PMC full-text</td>
+      <td>Pre-train from scratch (T5)</td>
+      <td>NER / RE SOTA (2021)</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://github.com/justinphan3110/SciFive" target="_blank">github.com/justinphan3110/SciFive</a></td>
+    </tr>
+    <tr>
+      <td>BioGPT</td>
+      <td>Luo et al. 2022 · Briefings Bioinformatics</td>
+      <td><span class="tag tag-arch">Dec</span></td><td>1.5B</td>
+      <td>PubMed abstracts (15M; 342B tokens)</td>
+      <td>Pre-train from scratch (GPT-2 arch)</td>
+      <td>PubMedQA 81.0%</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://github.com/microsoft/BioGPT" target="_blank">github.com/microsoft/BioGPT</a></td>
+    </tr>
+    <tr>
+      <td>BioMedLM</td>
+      <td>Venigalla et al. 2022 · MosaicML</td>
+      <td><span class="tag tag-arch">Dec</span></td><td>2.7B</td>
+      <td>PubMed abstracts + PMC full-text</td>
+      <td>Pre-train from scratch (GPT-NeoX arch)</td>
+      <td>MedMCQA 57.3% †</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://huggingface.co/stanford-crfm/BioMedLM" target="_blank">HuggingFace: BioMedLM</a></td>
+    </tr>
+    <tr>
+      <td>BioBART</td>
+      <td>Yuan et al. 2022 · BioNLP@ACL</td>
+      <td><span class="tag tag-arch">E-D</span></td><td>400M</td>
+      <td>PubMed abstracts (15M)</td>
+      <td>Pre-train from scratch (BART arch)</td>
+      <td>Dialogue ROUGE-L 27.8</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://huggingface.co/GanjinZero/biobart-v2-large" target="_blank">HuggingFace: biobart-v2-large</a></td>
+    </tr>
+    <tr>
+      <td>BiomedGPT</td>
+      <td>Zhang et al. 2023 · arXiv</td>
+      <td><span class="tag tag-arch">MM</span></td><td>182M</td>
+      <td>Multimodal: radiology, pathology, protein, text</td>
+      <td>Pre-train from scratch (unified enc-dec)</td>
+      <td>16 SOTA across 26 datasets</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://github.com/taokz/BiomedGPT" target="_blank">github.com/taokz/BiomedGPT</a></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+<!-- ── A.3 GENERAL-PURPOSE LLMs ───────────────────────────────────────────── -->
+<div class="app-section-title">A.3 &nbsp; General-Purpose LLMs</div>
+<div class="app-note">
+  All results are zero-shot or few-shot unless noted. Parameter counts for closed models are
+  not officially disclosed (n/a). GPT-3.5 and GPT-4 MedQA results from Liévin et al. (2024)
+  and Nori et al. (2023) respectively, using the 4-option USMLE split with 5-shot prompting.
+</div>
+<div class="tbl-wrap">
+<table class="app-tbl">
+  <thead>
+    <tr>
+      <th>Model</th><th>Reference · Venue</th><th>Arch</th><th>Params</th>
+      <th>Pre-training Corpus</th>
+      <th>MedQA</th><th>MedMCQA</th><th>PubMedQA</th>
+      <th>OS</th><th>Access</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GPT-3.5</td>
+      <td>Brown et al. 2020 · NeurIPS</td>
+      <td><span class="tag tag-arch">Dec</span></td><td>175B</td>
+      <td>Web-scale (CommonCrawl, Books, Wikipedia)</td>
+      <td class="score">60.2 †</td><td class="score">62.7 †</td><td class="score">78.2 †</td>
+      <td><span class="tag tag-os-no">✗</span></td>
+      <td>OpenAI API <code>gpt-3.5-turbo</code></td>
+    </tr>
+    <tr>
+      <td>LLaMA-2-70B</td>
+      <td>Touvron et al. 2023 · arXiv</td>
+      <td><span class="tag tag-arch">Dec</span></td><td>70B</td>
+      <td>Web-scale (2T tokens, 2022 cutoff)</td>
+      <td class="score">62.5 †</td><td class="na">n/a</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://huggingface.co/meta-llama/Llama-2-70b-hf" target="_blank">HuggingFace: Llama-2-70b-hf</a></td>
+    </tr>
+    <tr>
+      <td>GPT-4</td>
+      <td>OpenAI 2023 · Technical report</td>
+      <td><span class="tag tag-arch">Dec</span></td><td class="na">n/a</td>
+      <td>Web-scale + RLHF (cutoff Sept 2021)</td>
+      <td class="score">86.1 †</td><td class="na">n/a</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-no">✗</span></td>
+      <td>OpenAI API <code>gpt-4</code></td>
+    </tr>
+    <tr>
+      <td>Gemini 1.0 Ultra</td>
+      <td>Google 2023 · arXiv</td>
+      <td><span class="tag tag-arch">Dec</span></td><td class="na">n/a</td>
+      <td>Web-scale + multimodal</td>
+      <td class="score">67.0</td><td class="score">62.2</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-no">✗</span></td>
+      <td>Google AI API</td>
+    </tr>
+    <tr>
+      <td>GPT-4o</td>
+      <td>OpenAI 2024 · Technical report</td>
+      <td><span class="tag tag-arch">Dec</span></td><td class="na">n/a</td>
+      <td>Web-scale + multimodal</td>
+      <td class="na">n/a</td><td class="na">n/a</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-no">✗</span></td>
+      <td>OpenAI API <code>gpt-4o</code></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+<!-- ── A.4 DEDICATED MEDICAL LLMs ─────────────────────────────────────────── -->
+<div class="app-section-title">A.4 &nbsp; Dedicated Medical LLMs</div>
+<div class="app-note">
+  Models ordered by publication year then MedQA score.
+  Chinese-ecosystem models (HuatuoGPT, Qilin-Med, Zhongjing) are primarily
+  evaluated on CMExam and CMedQA; MedQA (EN) is n/a for most — see respective papers.
+  Closed models explicitly noted as "not released" to avoid ambiguity.
+</div>
+<div class="tbl-wrap">
+<table class="app-tbl">
+  <thead>
+    <tr>
+      <th>Model</th><th>Reference · Venue</th><th>Params</th>
+      <th>Base Model</th><th>Training Strategy</th>
+      <th>MedQA</th><th>MedMCQA</th>
+      <th>OS</th><th>Weights / Code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Med-PaLM</td>
+      <td>Singhal et al. 2023 · Nature</td><td>540B</td>
+      <td>Flan-PaLM-540B</td>
+      <td>IFT on MultiMedQA; instruction prompt tuning</td>
+      <td class="score">67.6 †</td><td class="score">57.6 †</td>
+      <td><span class="tag tag-os-no">✗</span></td>
+      <td>Not released (Google internal)</td>
+    </tr>
+    <tr>
+      <td>Meditron-70B</td>
+      <td>Chen et al. 2023 · arXiv</td><td>70B</td>
+      <td>LLaMA-2-70B</td>
+      <td>CPT on PubMed + guidelines (45B tokens) then SFT</td>
+      <td class="score">70.2</td><td class="score">64.4</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://huggingface.co/epfl-llm/meditron-70b" target="_blank">HuggingFace: meditron-70b</a></td>
+    </tr>
+    <tr>
+      <td>Clinical Camel-70B</td>
+      <td>Toma et al. 2023 · arXiv</td><td>70B</td>
+      <td>LLaMA-2-70B</td>
+      <td>QLoRA SFT on medical dialogues + MedQA train split</td>
+      <td class="score">60.7 ‡</td><td class="score">54.2 ‡</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://huggingface.co/wanglab/ClinicalCamel-70B" target="_blank">HuggingFace: ClinicalCamel-70B</a></td>
+    </tr>
+    <tr>
+      <td>MedAlpaca-13B</td>
+      <td>Han et al. 2023 · arXiv</td><td>13B</td>
+      <td>LLaMA-13B</td>
+      <td>SFT on 160K medical QA pairs (GPT-4 generated)</td>
+      <td class="score">35.4 ‡</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://github.com/kbressem/medAlpaca" target="_blank">github.com/kbressem/medAlpaca</a></td>
+    </tr>
+    <tr>
+      <td>PMC-LLaMA-13B</td>
+      <td>Wu et al. 2023 · arXiv</td><td>13B</td>
+      <td>LLaMA-13B</td>
+      <td>CPT on 4.8M PMC full-text papers then IFT</td>
+      <td class="score">27.6 ‡</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://github.com/chaoyi-wu/PMC-LLaMA" target="_blank">github.com/chaoyi-wu/PMC-LLaMA</a></td>
+    </tr>
+    <tr>
+      <td>HuatuoGPT</td>
+      <td>Zhang et al. 2023 · EMNLP Findings</td><td>7B</td>
+      <td>Baichuan-7B</td>
+      <td>SFT on hybrid physician QA + GPT-4 simulation</td>
+      <td class="na">n/a</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://github.com/FreedomIntelligence/HuatuoGPT" target="_blank">github.com/FreedomIntelligence/HuatuoGPT</a></td>
+    </tr>
+    <tr>
+      <td>Med-PaLM 2</td>
+      <td>Singhal et al. 2025 · Nature Medicine</td><td class="na">n/a</td>
+      <td>PaLM 2</td>
+      <td>IFT + ensemble refinement + chain-of-retrieval</td>
+      <td class="score">86.5 †</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-no">✗</span></td>
+      <td>Not released (Google internal)</td>
+    </tr>
+    <tr>
+      <td>Qilin-Med</td>
+      <td>Ye et al. 2024 · arXiv</td><td>7B</td>
+      <td>Baichuan-7B</td>
+      <td>CPT on ChiMed then SFT then DPO</td>
+      <td class="na">n/a</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://github.com/CMKRG/QiZhenGPT" target="_blank">github.com/CMKRG/QiZhenGPT</a></td>
+    </tr>
+    <tr>
+      <td>Zhongjing</td>
+      <td>Yang et al. 2023 · arXiv</td><td>13B</td>
+      <td>LLaMA-13B</td>
+      <td>SFT on real multi-turn physician dialogues</td>
+      <td class="na">n/a</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://github.com/SupritYoung/Zhongjing" target="_blank">github.com/SupritYoung/Zhongjing</a></td>
+    </tr>
+    <tr>
+      <td>BioMistral-7B</td>
+      <td>Labrak et al. 2024 · arXiv</td><td>7B</td>
+      <td>Mistral-7B-v0.1</td>
+      <td>CPT on PMC Open Access (3B tokens)</td>
+      <td class="score">44.4 ‡</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://huggingface.co/BioMistral/BioMistral-7B" target="_blank">HuggingFace: BioMistral-7B</a></td>
+    </tr>
+    <tr>
+      <td>Med-Gemini-L ★</td>
+      <td>Saab et al. 2024 · arXiv</td><td class="na">n/a</td>
+      <td>Gemini 1.0 Ultra</td>
+      <td>IFT + uncertainty-guided web search at inference</td>
+      <td class="score">91.1 †★</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-no">✗</span></td>
+      <td>Not released (Google internal)</td>
+    </tr>
+    <tr>
+      <td>Polaris</td>
+      <td>Mukherjee et al. 2024 · arXiv</td><td class="na">n/a</td>
+      <td>Proprietary</td>
+      <td>Safety-first IFT + DPO on physician preference pairs</td>
+      <td class="na">n/a</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-no">✗</span></td>
+      <td>Not released (Accenture internal)</td>
+    </tr>
+    <tr>
+      <td>Baichuan-M1-14B</td>
+      <td>Xu et al. 2025 · arXiv</td><td>14B</td>
+      <td>From scratch</td>
+      <td>Full-stack: domain vocab + CPT + SFT + RLHF</td>
+      <td class="na">n/a</td><td class="na">n/a</td>
+      <td><span class="tag tag-os-yes">✓</span></td>
+      <td><a class="url-link" href="https://huggingface.co/baichuan-inc/Baichuan-M1-14B" target="_blank">HuggingFace: Baichuan-M1-14B</a></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+<!-- ── Evaluation protocol note ───────────────────────────────────────────── -->
+<div class="eval-note">
+  <h4>Evaluation Protocol Note</h4>
+  Results across Tables A.1–A.4 are drawn from original papers and may not be directly
+  comparable due to three primary sources of heterogeneity:
+  <ol>
+    <li><strong>MedQA variant</strong> — evaluated in both 3-option and 4-option formats across studies;
+        the 4-option variant is harder and is the standard from 2022 onwards.</li>
+    <li><strong>Train/test splits</strong> — differ between the official Jin et al. (2021) release
+        and community-reproduced splits.</li>
+    <li><strong>Few-shot prompt format</strong> — varies in number of examples (1–8),
+        chain-of-thought structure, and system prompt content.</li>
+  </ol>
+  Scores should be interpreted as approximate rather than absolute rankings.
+  The BLURB leaderboard (<a class="url-link" href="https://microsoft.github.io/BLURB/leaderboard.html" target="_blank">microsoft.github.io/BLURB</a>)
+  provides standardized encoder-only comparisons under a fixed evaluation protocol.
+  All URLs verified December 2025; availability is subject to repository maintainer policies.
+</div>
+
+</div><!-- /.container -->
+
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   TIMELINE SCRIPT
+   ════════════════════════════════════════════════════════════ */
+const START=2019, END=2025.6;
+const pct=yr=>((yr-START)/(END-START)*100).toFixed(3)+'%';
+const YEARS=[2019,2020,2021,2022,2023,2024,2025];
+
+const S={
+  enc:{bg:'#E1F5EE',bdr:'#0F6E56',txt:'#085041'},
+  gen:{bg:'#E6F1FB',bdr:'#185FA5',txt:'#0C447C'},
+  llm:{bg:'#FAEEDA',bdr:'#854F0B',txt:'#633806'},
+  med:{bg:'#FCEBEB',bdr:'#A32D2D',txt:'#501313'},
+};
+
+const families=[
+  {id:'enc',label:'Encoder-only',rows:2,models:[
+    {yr:2019.10,name:'BioBERT',      sup:'',  row:0,note:'110M · PubMed+PMC continued pre-training · BLURB 84.3%'},
+    {yr:2019.55,name:'SciBERT',      sup:'',  row:1,note:'110M · PubMed+CS · BLURB 83.0%'},
+    {yr:2019.95,name:'Bio_ClinBERT', sup:'',  row:0,note:'110M · MIMIC-III clinical notes · BLURB 82.1%'},
+    {yr:2020.50,name:'BioMegatron',  sup:'',  row:1,note:'345M · larger scale, vocab×size study · BLURB 85.2%'},
+    {yr:2021.20,name:'PubMedBERT',   sup:'',  row:0,note:'110M · from-scratch domain vocab · BLURB 84.9% (SOTA 2021)'},
+    {yr:2021.70,name:'UmlsBERT',     sup:'',  row:1,note:'110M · UMLS-augmented MLM · strong clinical NER'},
+    {yr:2022.20,name:'BioLinkBERT',  sup:'',  row:0,note:'340M · citation-linked pre-training · BLURB 86.4% (SOTA 2022)'},
+    {yr:2022.65,name:'GatorTron',    sup:'',  row:1,note:'8.9B · clinical notes scale-up · BLURB 85.0%'},
+    {yr:2025.10,name:'Clin.ModBERT', sup:'',  row:0,note:'149M · modern arch, 2.3× faster · BLURB 84.1%'},
+  ]},
+  {id:'gen',label:'Generative /\nEnc-Dec',rows:2,models:[
+    {yr:2021.50,name:'SciFive',   sup:'',  row:0,note:'770M · T5 text-to-text for biomedical NLP'},
+    {yr:2022.30,name:'BioGPT',    sup:'',  row:1,note:'1.5B · GPT-2 decoder · PubMedQA 81.0%'},
+    {yr:2022.55,name:'BioMedLM',  sup:'',  row:0,note:'2.7B · Decoder · PubMed+PMC'},
+    {yr:2022.80,name:'BioBART',   sup:'',  row:1,note:'400M · BART denoising · NLG tasks'},
+    {yr:2023.20,name:'BiomedGPT', sup:'',  row:0,note:'182M · first open multimodal generalist · 16 SOTA results'},
+  ]},
+  {id:'llm',label:'General-purpose\nLLMs',rows:2,models:[
+    {yr:2022.80,name:'GPT-3.5',     sup:'†', row:0,note:'175B · MedQA 60.2%† · Crosses USMLE passing threshold'},
+    {yr:2023.20,name:'LLaMA-2-70B', sup:'†', row:1,note:'70B · MedQA 62.5%† · First open-weight to pass'},
+    {yr:2023.50,name:'GPT-4',       sup:'†', row:0,note:'MedQA 86.1%† · Exceeds physician average threshold'},
+    {yr:2023.85,name:'Gemini 1.0',  sup:'',  row:1,note:'Multimodal web-scale · MedQA 67.0%'},
+    {yr:2024.25,name:'GPT-4o',      sup:'',  row:0,note:'Multimodal frontier · strong clinical + visual reasoning'},
+  ]},
+  {id:'med',label:'Dedicated\nMedical LLMs',rows:4,models:[
+    {yr:2023.00,name:'Med-PaLM',     sup:'†', row:0,note:'540B · MedQA 67.6%† · MultiMedQA suite  + 8-axis physician eval'},
+    {yr:2023.12,name:'Meditron-70B', sup:'',  row:1,note:'70B · MedQA 70.2% · open-weight CPT'},
+    {yr:2023.22,name:'Clin. Camel',  sup:'‡', row:2,note:'70B · MedQA 60.7%‡ · QLoRA dialogue FT'},
+    {yr:2023.32,name:'MedAlpaca',    sup:'‡', row:3,note:'13B · MedQA 35.4%‡ · fine-tuning paradox exemplar'},
+    {yr:2023.45,name:'HuatuoGPT',   sup:'',  row:0,note:'7B · Chinese medical LLM· physician+GPT-4 hybrid'},  // gap from Med-PaLM = 0.45
+    {yr:2023.72,name:'Med-PaLM 2',  sup:'†', row:1,note:'MedQA 86.5%† · ensemble refinement + chain-of-retrieval'},  // gap from Meditron = 0.60
+    {yr:2024.10,name:'BioMistral',  sup:'',  row:0,note:'7B · multilingual· only biomedical model with cross-lingual eval'},  // gap from HuatuoGPT = 0.65
+    {yr:2024.30,name:'Med-Gemini',  sup:'★', row:1,note:'MedQA 91.1%† — current SOTA · surpasses physician avg.'},// gap from Med-PaLM2 = 0.58
+    {yr:2024.62,name:'Polaris',     sup:'',  row:0,note:'Safety-first constellation · DPO on physician preference pairs'},  // gap from BioMistral = 0.52
+    {yr:2025.22,name:'Baichuan-M1', sup:'',  row:0,note:'14B · full-stack medical pre-trainingfrom scratch'},  // gap from Polaris = 0.60
+  ]},
+];
+
+const milestones=[
+  {yr:2019.1, row:0,txt:'In-domain pre-training\nestablished'},
+  {yr:2021.2, row:1,txt:'From-scratch vocab\nbeats continued PT'},
+  {yr:2022.55,row:0,txt:'Open-ended QA\nunlocked'},
+  {yr:2022.8, row:1,txt:'USMLE passing\nthreshold crossed'},
+  {yr:2023.5, row:0,txt:'Expert-level\nMCQ performance'},
+  {yr:2024.3, row:1,txt:'SOTA surpasses\nphysician average'},
+];
+
+const root=document.getElementById('tl-root');
+const tt=document.getElementById('tt');
+
+const ybar=document.createElement('div');
+ybar.className='tl-yearbar';
+YEARS.forEach(y=>{
+  const t=document.createElement('div');
+  t.className='tl-yr';t.style.left=pct(y);t.textContent=y;
+  ybar.appendChild(t);
+});
+root.appendChild(ybar);
+
+const mBlock=document.createElement('div');
+mBlock.style.cssText='position:relative;margin-left:152px;height:80px;margin-bottom:6px;';
+const ROW_TOP={0:'2px',1:'40px'};
+milestones.forEach(m=>{
+  const wrap=document.createElement('div');
+  wrap.style.cssText=`position:absolute;left:${pct(m.yr)};top:${ROW_TOP[m.row]};transform:translateX(-50%);text-align:center;`;
+  const chip=document.createElement('div');
+  chip.style.cssText=`display:inline-block;font-size:10px;color:#666;
+    background:#f5f5f5;border:.5px solid #ddd;
+    border-radius:4px;padding:2px 6px;white-space:nowrap;line-height:1.4;font-style:italic;`;
+  chip.innerHTML=m.txt.replace('\n','<br>');
+  wrap.appendChild(chip);
+  const dot=document.createElement('div');
+  dot.style.cssText='width:4px;height:4px;border-radius:50%;background:#ccc;margin:3px auto 0;';
+  wrap.appendChild(dot);
+  mBlock.appendChild(wrap);
+});
+root.appendChild(mBlock);
+
+const CHIP_H=22, ROW_GAP=4, FAM_GAP=7;
+
+families.forEach(fam=>{
+  const s=S[fam.id];
+  const isMed=fam.id==='med';
+  const row=document.createElement('div');
+  row.className='tl-row';row.style.marginBottom=FAM_GAP+'px';
+
+  const lbl=document.createElement('div');
+  lbl.className='tl-flabel';
+  lbl.innerHTML=fam.label.replace('\n','<br>');
+  lbl.style.color=s.bdr;
+  row.appendChild(lbl);
+
+  const trackH=fam.rows*(CHIP_H+ROW_GAP)-ROW_GAP+12;
+  const track=document.createElement('div');
+  track.className='tl-track';
+  track.style.cssText=`min-height:${trackH}px;background:${s.bg};
+    border:.5px solid ${s.bdr}33;border-radius:7px;padding:5px 0;`;
+
+  YEARS.forEach(y=>{
+    const gl=document.createElement('div');
+    gl.className='tl-gline';
+    gl.style.left=pct(y);gl.style.background=s.bdr+'33';
+    track.appendChild(gl);
+  });
+
+  fam.models.forEach(m=>{
+    const chip=document.createElement('div');
+    chip.className='tl-chip';
+    chip.style.left=pct(m.yr);
+    chip.style.top=(5+m.row*(CHIP_H+ROW_GAP))+'px';
+    chip.style.height=CHIP_H+'px';
+    chip.style.lineHeight=CHIP_H+'px';
+    chip.style.fontSize=isMed?'9.5px':'10.5px';
+    chip.style.background='white';
+    chip.style.borderColor=s.bdr;
+    chip.style.color=s.txt;
+
+    const nameEl=document.createElement('span');
+    nameEl.className='chip-name';
+    nameEl.textContent=m.name;
+    chip.appendChild(nameEl);
+
+    if(m.sup){
+      const supEl=document.createElement('span');
+      supEl.className='chip-sup';
+      supEl.textContent=m.sup;
+      if(m.sup==='★') supEl.style.color='#B8860B';
+      chip.appendChild(supEl);
+    }
+
+    chip.addEventListener('mouseenter',e=>{
+      chip.style.background=s.bg;
+      chip.style.boxShadow=`0 0 0 1.5px ${s.bdr}66, 0 3px 8px ${s.bdr}22`;
+      tt.style.display='block';
+      tt.style.borderColor=s.bdr+'88';
+      tt.style.boxShadow=`0 4px 16px ${s.bdr}18, 0 0 0 .5px ${s.bdr}22`;
+      tt.innerHTML=`<strong style="border-bottom:.5px solid ${s.bdr}33;color:${s.txt}">${m.name}${m.sup?'<span style="font-size:10px;margin-left:2px">'+m.sup+'</span>':''}</strong><span>${m.note}</span>`;
+    });
+    chip.addEventListener('mousemove',e=>{
+      tt.style.left=(e.clientX+14)+'px';
+      tt.style.top=(e.clientY-10)+'px';
+    });
+    chip.addEventListener('mouseleave',()=>{
+      chip.style.background='white';
+      chip.style.boxShadow='none';
+      tt.style.display='none';
+    });
+    track.appendChild(chip);
+  });
+
+  row.appendChild(track);
+  root.appendChild(row);
+});
 </script>
+
+</body>
+</html>
+
