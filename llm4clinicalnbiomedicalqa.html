@@ -203,6 +203,7 @@ families.forEach(fam=>{
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -510,7 +511,7 @@ table.app-tbl td:first-child { font-weight: 600; white-space: nowrap; }
 <!-- ════════════════════════════════════════════════════════════════════════
      SECTION 2 — APPENDIX A: FULL MODEL INVENTORY
      ════════════════════════════════════════════════════════════════════════ -->
-<div class="section-heading" style="margin-top:2.5rem">
+<!-- <div class="section-heading" style="margin-top:2.5rem">
   Appendix A — Full Model Inventory
   <span class="section-badge">Extended Tables</span>
 </div>
@@ -529,11 +530,11 @@ table.app-tbl td:first-child { font-weight: 600; white-space: nowrap; }
   Results marked <strong>†</strong> are few-shot prompted; <strong>‡</strong> fine-tuned;
   <strong>★</strong> current SOTA on MedQA (4-option).
   <em>n/a</em> = not reported or evaluation setting incompatible.
-</div>
+</div> -->
 
 
 <!-- ── A.1 ENCODER-ONLY ───────────────────────────────────────────────────── -->
-<div class="app-section-title">A.1 &nbsp; Encoder-Only Models</div>
+<!-- <div class="app-section-title">A.1 &nbsp; Encoder-Only Models</div>
 <div class="app-note">
   BLURB scores from the BLURB leaderboard or original papers (aggregate across all BLURB tasks).
   Leaderboard: <a class="url-link" href="https://microsoft.github.io/BLURB/leaderboard.html" target="_blank">microsoft.github.io/BLURB</a>
@@ -640,11 +641,11 @@ table.app-tbl td:first-child { font-weight: 600; white-space: nowrap; }
     </tr>
   </tbody>
 </table>
-</div>
+</div> -->
 
 
 <!-- ── A.2 GENERATIVE / ENCODER-DECODER ──────────────────────────────────── -->
-<div class="app-section-title">A.2 &nbsp; Generative and Encoder-Decoder Models</div>
+<!-- <div class="app-section-title">A.2 &nbsp; Generative and Encoder-Decoder Models</div>
 <div class="app-note">
   These models are omitted from the main Table 1 for space. Their primary benchmarks differ from the
   encoder-only family — PubMedQA for reading comprehension; ROUGE / BERTScore for NLG tasks.
@@ -712,11 +713,11 @@ table.app-tbl td:first-child { font-weight: 600; white-space: nowrap; }
     </tr>
   </tbody>
 </table>
-</div>
+</div> -->
 
 
 <!-- ── A.3 GENERAL-PURPOSE LLMs ───────────────────────────────────────────── -->
-<div class="app-section-title">A.3 &nbsp; General-Purpose LLMs</div>
+<!-- <div class="app-section-title">A.3 &nbsp; General-Purpose LLMs</div>
 <div class="app-note">
   All results are zero-shot or few-shot unless noted. Parameter counts for closed models are
   not officially disclosed (n/a). GPT-3.5 and GPT-4 MedQA results from Liévin et al. (2024)
@@ -780,11 +781,11 @@ table.app-tbl td:first-child { font-weight: 600; white-space: nowrap; }
     </tr>
   </tbody>
 </table>
-</div>
+</div> -->
 
 
 <!-- ── A.4 DEDICATED MEDICAL LLMs ─────────────────────────────────────────── -->
-<div class="app-section-title">A.4 &nbsp; Dedicated Medical LLMs</div>
+<!-- <div class="app-section-title">A.4 &nbsp; Dedicated Medical LLMs</div>
 <div class="app-note">
   Models ordered by publication year then MedQA score.
   Chinese-ecosystem models (HuatuoGPT, Qilin-Med, Zhongjing) are primarily
@@ -921,11 +922,11 @@ table.app-tbl td:first-child { font-weight: 600; white-space: nowrap; }
     </tr>
   </tbody>
 </table>
-</div>
+</div> -->
 
 
 <!-- ── Evaluation protocol note ───────────────────────────────────────────── -->
-<div class="eval-note">
+<!-- <div class="eval-note">
   <h4>Evaluation Protocol Note</h4>
   Results across Tables A.1–A.4 are drawn from original papers and may not be directly
   comparable due to three primary sources of heterogeneity:
@@ -941,9 +942,113 @@ table.app-tbl td:first-child { font-weight: 600; white-space: nowrap; }
   The BLURB leaderboard (<a class="url-link" href="https://microsoft.github.io/BLURB/leaderboard.html" target="_blank">microsoft.github.io/BLURB</a>)
   provides standardized encoder-only comparisons under a fixed evaluation protocol.
   All URLs verified December 2025; availability is subject to repository maintainer policies.
-</div>
+</div> -->
 
-</div><!-- /.container -->
+
+<!-- ── RESEARCH GAP PRIORITIZATION MATRIX ─────────────────────────────────────────── -->
+<!-- <div class="app-section-title">VII. &nbsp;  OPEN PROBLEMS AND FUTURE DIRECTIONS </div>
+<div class="app-note">
+Extended Research Gap Prioritization Matrix. Novelty: degree to which the gap is under-explored (★ ★ ★ = highly novel);
+Evidence: strength of evidence that the gap exists; Feasibility: tractability without clinical trial infrastructure;
+and Impact: potential clinical or scientific value.
+</div>
+<div class="tbl-wrap">
+<table class="app-tbl">
+  <thead>
+    <tr>
+      <th>#</th><th>Gap</th><th>Novelty</th>
+      <th>Evidence</th><th>Feasibility</th>
+      <th>Impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Calibration & abstention</td>
+      <td> ★ ★ ★</td>
+      <td>Strong</td>
+      <td>High</td>
+      <td>Critical</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Temporal drift & continual learning</td>
+      <td> ★ ★ ★</td>
+      <td>Growing</td>
+      <td>Medium</td>
+      <td>Critical</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Multilingual low-resource</td>
+      <td> ★ ★ ★</td>
+      <td>Strong</td>
+      <td>Medium</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Flexible clinical reasoning</td>
+      <td> ★ ★ ★</td>
+      <td>Strong</td>
+      <td>High</td>
+      <td>Critical</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Open-ended long-form QA</td>
+      <td> ★ ★</td>
+      <td>Moderate</td>
+      <td>High</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Rare disease QA</td>
+      <td> ★ ★ ★</td>
+      <td>Confirmed</td>
+      <td>High</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Health equity & bias</td>
+      <td> ★ ★</td>
+      <td>Medium</td>
+      <td>Strong</td>
+      <td>Critical</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>RAG audit & provenance</td>
+      <td> ★ ★</td>
+      <td>Moderate</td>
+      <td>High</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>3-D multimodal QA</td>
+      <td> ★ ★ ★</td>
+      <td>Confirmed</td>
+      <td>Medium</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Regulatory evaluation</td>
+      <td> ★ ★</td>
+      <td>Growing</td>
+      <td>Low</td>
+      <td>Critical</td>
+    </tr>
+  </tbody>
+</table>
+</div> -->
+
+
+</div>
+<!-- /.container -->
 
 
 <script>
@@ -1120,4 +1225,3 @@ families.forEach(fam=>{
 
 </body>
 </html>
-
